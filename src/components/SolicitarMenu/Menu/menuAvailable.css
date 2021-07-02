@@ -1,0 +1,37 @@
+.solicit-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 90%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.446);
+  border-radius: 20px;
+  gap: 1rem;
+}
+
+.solicit-form-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  padding: 15px;
+}
+
+.solicit-btns-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}

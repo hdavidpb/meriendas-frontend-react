@@ -1,0 +1,25 @@
+ {/* <table class="table table-striped orders-container">
+        <thead>
+          <tr>
+            <th scope="col">ESTADO</th>
+            <th scope="col">DIA</th>
+            <th scope="col">JORNADA</th>
+            <th scope="col">MENÚ</th>
+            <th scope="col">PRECIO</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordersByDate.map((item) => (
+            <tr>
+              <td>{item.estado}</td>
+              <td>{item.fecha}</td>
+              <td>{item.jornada === 1 ? "MAÑANA" : "TARDE"}</td>
+              <td>{item.nombre_menu}</td>
+
+              <td>{`$ ${new Intl.NumberFormat("de-DE").format(
+                item.precio
+              )}`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table> */}

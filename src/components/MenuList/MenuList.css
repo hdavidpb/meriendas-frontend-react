@@ -1,0 +1,151 @@
+.card-menu {
+  margin: auto;
+  position: relative;
+  width: 37rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px rgba(128, 128, 128, 0.152);
+  background: rgba(233, 247, 247, 0.994);
+  gap: 1rem;
+  padding: 1.3rem;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.611);
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+.card-menu img {
+  display: flex;
+
+  width: 110px;
+  height: 95px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.611);
+}
+.card-menu-right {
+  width: 80%;
+  padding-left: 1rem;
+  border-left: solid 1px rgba(128, 128, 128, 0.481);
+}
+.card-menu-header {
+  border-bottom: solid 1px rgba(128, 128, 128, 0.33);
+}
+.card-menu-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 7px;
+}
+.menu-description {
+  color: rgba(0, 0, 0, 0.563);
+  max-width: 290px;
+  height: 50px;
+  word-wrap: break-word;
+  overflow: none;
+  overflow-y: auto;
+  font-size: 15px;
+  padding-bottom: 5px;
+}
+.menu-description::-webkit-scrollbar {
+  background: rgba(149, 80, 228, 0.72);
+  border-radius: 20px;
+  height: 10px;
+  width: 6px;
+}
+.available-check {
+  position: absolute;
+  top: 3%;
+  right: 2%;
+  background: green;
+  color: white;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.309);
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 14px;
+  z-index: 20;
+}
+
+.disabled-check {
+  position: absolute;
+  top: 3%;
+  right: 2%;
+  background: grey;
+  color: white;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.309);
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 14px;
+  z-index: 20;
+}
+.btns-options {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+.btns-opt {
+  font-size: 13px;
+}
+
+.disabled {
+  background: rgba(128, 128, 128, 0);
+
+  opacity: 0.7;
+}
+
+.order {
+  font-size: 14px;
+  color: black;
+  padding: 10px;
+}
+
+@media (max-width: 1024px) {
+  .card-menu {
+    width: 100%;
+  }
+  .card-menu-footer h4 {
+    font-size: 16px;
+  }
+  .order {
+    font-size: 12px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .order {
+    font-size: 14px;
+    padding: 5px;
+  }
+}
+
+@media (max-width: 414px) {
+  .card-menu {
+    width: 100%;
+  }
+  .order {
+    font-size: 10px;
+  }
+  .card-menu-footer {
+    flex-direction: column;
+  }
+  .btns-options {
+    width: 100%;
+    justify-content: center;
+  }
+  .disabled-check {
+    left: 7%;
+
+    font-size: 8px;
+  }
+  .available-check {
+    left: 7%;
+    font-size: 8px;
+  }
+  .order {
+    font-size: 13px;
+  }
+}
