@@ -53,7 +53,7 @@ const MenuAvailable = () => {
     setShowConfirm(true);
     setJornada(e.target.value);
 
-    const dataOrder = {
+    let dataOrder = {
       sede: null,
       menuId: dataMenu.menuId,
       price: dataMenu.price.replace(".", ""),
@@ -62,6 +62,7 @@ const MenuAvailable = () => {
       date: date,
       time: time,
       idEmployed: user.nit,
+      employedName: user.name,
       entity: user.entity,
     };
     setOrder(dataOrder);

@@ -42,7 +42,7 @@ const MisPedidos = () => {
         </div>
 
         <button
-          className="btn btn-outline-success btn-search"
+          className="btn btn-success btn-search"
           onClick={() =>
             handleGetOrdersByDate(initialDate, finalDate, user.nit)
           }
@@ -64,9 +64,9 @@ const MisPedidos = () => {
             <li className="order-list-item state">
               <div
                 className={
-                  item.estado === "pendiente"
-                    ? "state-mark pending"
-                    : "state-mark delivered"
+                  item.estado === "entregado"
+                    ? "state-mark delivered"
+                    : "state-mark pending "
                 }
               ></div>
               <div>{item.estado}</div>

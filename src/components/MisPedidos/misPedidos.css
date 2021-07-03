@@ -51,18 +51,22 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-
+  padding: 0;
   list-style: none;
 }
 .header {
   background: #1b85a1;
-  padding: 5px;
+  margin-top: 2rem;
   color: white;
   padding: 10px;
   z-index: 100;
 }
 .order-list-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 32px;
   border-bottom: solid 1px rgba(128, 128, 128, 0.213);
   text-align: center;
 }
@@ -108,4 +112,14 @@
 }
 .delivered {
   background: green;
+}
+
+.ckeckboxBox {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.selected-item {
+  background: rgba(128, 128, 128, 0.118);
 }
