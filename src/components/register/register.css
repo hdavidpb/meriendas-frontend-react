@@ -2,6 +2,8 @@
   margin: auto;
   width: 50%;
   margin-top: 2rem;
+  background: white;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.207);
 }
 
 .form-register-container {

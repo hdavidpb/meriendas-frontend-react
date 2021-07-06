@@ -17,10 +17,13 @@
   border-right: solid 1px rgba(128, 128, 128, 0.35);
 }
 .nav-options {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  z-index: 1000;
+  transition: all 0.4s;
 }
 
 .nav-list {
@@ -38,6 +41,17 @@
   align-items: center;
   gap: 5px;
 }
+.bars-menu {
+  display: none;
+  font-size: 1.3rem;
+
+  padding: 10px;
+}
+.toggle {
+  display: none;
+  background: red;
+  transition: all 0.4s;
+}
 
 @media (max-width: 1024px) {
   .nav-container {
@@ -46,8 +60,11 @@
 }
 
 @media (max-width: 768px) {
+  .bars-menu {
+    display: block;
+  }
   .nav-options {
-    width: 50%;
+    width: 100%;
     height: auto;
     background: rgba(255, 255, 255, 0.919);
     flex-direction: column;

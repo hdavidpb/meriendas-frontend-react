@@ -58,18 +58,25 @@ function App() {
     }
   };
 
+  const PrivateRuteRegister = ({ component, path, ...rest }) => {
+    if (roll === "admin") {
+      return <Route component={component} path={path} {...rest} />;
+    } else {
+      return <Redirect to="/" {...rest} />;
+    }
+  };
   return user.state !== null ? (
     <Router>
       <div className="container-app">
         <Navbar />
         {user.name !== null && (
-          <div className="mt-2 bg-light ">{`Bienvenido/a ${user.name}`}</div>
+          <h5 className="mt-2 bg-light p-3">{`Bienvenido/a ${user.name}`}</h5>
         )}
         <Switch>
           <PrivateRute path="/" component={MenuAvailable} exact />
           <PrivateRute path="/mis-pedidos" component={MisPedidos} exact />
           <Route path="/login" component={Login} exact />
-          <PrivateRuteAdmin path="/register" component={Register} exact />
+          <PrivateRuteRegister path="/register" component={Register} exact />
           <PrivateRuteAdmin path="/configurar-menu" component={Menu} exact />
           <PrivateRuteAdminEntregar
             path="/entregar-merienda"

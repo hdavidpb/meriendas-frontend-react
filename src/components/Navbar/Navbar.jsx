@@ -1,7 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserProvider";
 import { PedidosContext } from "../../context/PedidosProvider";
 import "./navbar.css";
+import "aos/dist/aos.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link, NavLink, withRouter } from "react-router-dom";
 
 const Navbar = (props) => {
@@ -14,12 +17,24 @@ const Navbar = (props) => {
     setOrdersByDate([]);
   };
 
+  useEffect(() => {
+    document.querySelector(".bars-menu").addEventListener("click", function () {
+      document.querySelector(".nav-options").classList.toggle("toggle");
+
+      document
+        .querySelector(".nav-options")
+        .addEventListener("click", function () {
+          document.querySelector(".nav-options").classList.add("toggle");
+        });
+    });
+  }, []);
+
   return (
     <nav className="nav-container mt-2">
       <div className="nav-brand">
         <h3>Meriendas</h3>
       </div>
-      <div className="nav-options">
+      <div className="nav-options" data-aos="zoom-in-up">
         {user.state ? (
           <ul className="nav-list">
             {roll === "admin" ? (
@@ -79,6 +94,9 @@ const Navbar = (props) => {
             </button>
           )}
         </div>
+      </div>
+      <div className="bars-menu">
+        <FontAwesomeIcon icon={faBars} />
       </div>
     </nav>
   );

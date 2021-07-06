@@ -1,11 +1,12 @@
 import axios from "axios";
-import el from "date-fns/esm/locale/el/index.js";
+import Swal from "sweetalert2";
 import React, { useContext, useEffect, useState } from "react";
 import ReactExport from "react-export-excel";
 import { MenuContext } from "../../context/MenuProvider";
 import { PedidosContext } from "../../context/PedidosProvider";
 import { UserContext } from "../../context/UserProvider";
 import "./entregar.css";
+import EntregarList from "./EntregarList";
 const Entregar = () => {
   const ExcelFile = ReactExport.ExcelFile;
   const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -18,7 +19,7 @@ const Entregar = () => {
 
   const [action, setAction] = useState("");
   const [enabledBtnAction, setEnabledBtnAction] = useState(true);
-  const [checkAll, setCheckAll] = useState(false);
+  // const [checkAll, setCheckAll] = useState(false);
 
   const [nit, setNit] = useState("");
   const [jornada, setJornada] = useState(0);
@@ -29,7 +30,7 @@ const Entregar = () => {
 
   const [filterOrder, setFilterOrder] = useState([]);
   const [checkedOrders, setCheckedOrders] = useState([]);
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     setFilterData({
@@ -63,6 +64,7 @@ const Entregar = () => {
       });
 
       setFilterOrder(showArray);
+      console.log(filterOrder);
     } catch (error) {
       console.log(error);
     }
@@ -70,13 +72,23 @@ const Entregar = () => {
 
   const handleUpdateStateCheckedOrders = async (item, action, user) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `http://localhost:3001/api/updateTo-delivered-state/${item.id}`,
         {
           state: action,
           user_nit: user.nit,
         }
       );
+
+      setFilterData({
+        initialDate: initialDate,
+        finalDate: finalDate,
+        nit: Number(nit),
+        jornada: Number(jornada),
+        sede: sede,
+        state: state,
+        menuName: menuName,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -91,6 +103,7 @@ const Entregar = () => {
     let newArrayPostAction = [...filterOrder];
     newArrayPostAction.forEach((el) => {
       if (el.check) el.estado = action;
+      el.check = false;
     });
     setFilterData(newArrayPostAction);
 
@@ -98,13 +111,38 @@ const Entregar = () => {
       handleUpdateStateCheckedOrders(el, action, user);
       console.log(el, action);
     });
+
+    if (action === "entregado" && checkedOrders.length > 1) {
+      Swal.fire("Ordenes entregadas!", "", "success");
+    } else if (action === "entregado" && checkedOrders.length === 1) {
+      Swal.fire("Orden entregada!", "", "success");
+    }
+
+    if (action === "eliminado" && checkedOrders.length > 1) {
+      Swal.fire("Ordenes eliminadas!", "", "success");
+    } else if (action === "eliminado" && checkedOrders.length === 1) {
+      Swal.fire("Orden eliminada!", "", "success");
+    }
+
+    setChecked(false);
+
+    setCheckedOrders([]);
+    setFilterData({
+      initialDate: initialDate,
+      finalDate: finalDate,
+      nit: Number(nit),
+      jornada: Number(jornada),
+      sede: sede,
+      state: state,
+      menuName: menuName,
+    });
   };
 
   ////////////////////////////////////CHANGE CHACKED//////////////////////////////////////////////////////////////////////////////
   const handleCheckedAllOrders = () => {
     const allOrdersChecked = [...filterOrder];
     allOrdersChecked.forEach((el) => {
-      el.check = checked;
+      el.check = !checked;
     });
 
     setFilterOrder(allOrdersChecked);
@@ -118,7 +156,6 @@ const Entregar = () => {
         el.check = !el.check;
       }
       setFilterOrder(arraySelected);
-      console.log(arraySelected);
     });
   };
 
@@ -212,18 +249,23 @@ const Entregar = () => {
         </div>
       </div>
 
-      {/* **********************+*****FILTER DATA CONTAINER ++++++++++++++++++++++++++++++++++++++++++++++ */}
-      <div className="filter-orders-list-footer ">
+      {/***********************************FILTER DATA CONTAINER +++++++++++++++++++++++++++++++++++++++++++++++*/}
+      <div className="filter-orders-list-footer">
         <ul className="orders-list header">
-          <li className="order-list-item checkAll">
+          <li className="order-list-item counter">#</li>
+          <li className="order-list-item ckeckboxBox">
             <input
               type="checkbox"
               id="checkALL"
               onChange={() => handleCheckedAllOrders()}
+              checked={checked}
             />
+            <div className="state-mark"></div>
           </li>
+
           <li className="order-list-item"> ESTADO</li>
           <li className="order-list-item"> ENTIDAD</li>
+          <li className="order-list-item"> SEDE</li>
           <li className="order-list-item"> EMPLEADO</li>
           <li className="order-list-item"> DÍA</li>
           <li className="order-list-item"> JORNADA</li>
@@ -231,86 +273,16 @@ const Entregar = () => {
           <li className="order-list-item"> PRECIO</li>
         </ul>
       </div>
+
+      {/*////////////////////// LIST ////////////////////////////////////////////*/}
       <div className="orders-container ">
         {filterOrder.map((item, index) => (
-          <ul key={item.id} className="orders-list">
-            <li className="order-list-item ckeckboxBox">
-              <input
-                type="checkbox"
-                id="check"
-                checked={item.check}
-                onChange={() => handleCheckedOrder(index)}
-              />
-              <div
-                className={
-                  item.estado === "entregado"
-                    ? "state-mark delivered"
-                    : "state-mark pending "
-                }
-              ></div>
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item state selected-item "
-                  : "order-list-item state"
-              }
-            >
-              <div>{item.estado}</div>
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item selected-item "
-                  : "order-list-item"
-              }
-            >
-              {item.entidad}
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item selected-item "
-                  : "order-list-item"
-              }
-            >
-              {item.nombre_empleado}
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item selected-item "
-                  : "order-list-item"
-              }
-            >
-              {item.fecha.slice(0, 10)}
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item selected-item "
-                  : "order-list-item"
-              }
-            >
-              {item.jornada === 1 ? "MAÑANA" : "TARDE"}
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item selected-item "
-                  : "order-list-item"
-              }
-            >
-              {item.nombre_menu}
-            </li>
-            <li
-              className={
-                item.check
-                  ? "order-list-item selected-item "
-                  : "order-list-item"
-              }
-            >{`$ ${new Intl.NumberFormat("de-DE").format(item.precio)}`}</li>
-          </ul>
+          <EntregarList
+            key={item.id}
+            item={item}
+            index={index}
+            handleCheckedOrder={handleCheckedOrder}
+          />
         ))}
       </div>
       {filterOrder.length > 0 ? (
@@ -324,7 +296,7 @@ const Entregar = () => {
               onChange={(e) => handleChangeAction(e)}
             >
               <option value="DEFAULT" disabled>
-                --Seleccione una acción
+                --Seleccione una acción--
               </option>
               <option value="entregado">ENTREGAR</option>
               <option value="eliminado">ELIMINAR</option>
@@ -349,6 +321,7 @@ const Entregar = () => {
                 <ExcelColumn label="ESTADO" value="estado" />
                 <ExcelColumn label="ENTIDAD" value="entidad" />
                 <ExcelColumn label="EMPLEADO" value="nombre_empleado" />
+                <ExcelColumn label="ID" value="nit_empleado" />
                 <ExcelColumn label="DIA" value="fecha" />
                 <ExcelColumn
                   label="JORNADA"
@@ -358,6 +331,13 @@ const Entregar = () => {
                 <ExcelColumn label="PRECIO" value="precio" />
               </ExcelSheet>
             </ExcelFile>
+            <div>
+              <h2>
+                {`$ ${new Intl.NumberFormat("de-DE").format(
+                  filterOrder.reduce((acc, item) => acc + item.precio, 0)
+                )}`}
+              </h2>
+            </div>
           </div>
         </div>
       ) : null}

@@ -1,0 +1,51 @@
+<div className="login-container">
+    //   <form className="form-container">
+    //     <h1 className="text-center">LOGIN</h1>
+    //     <input
+    //       type="text"
+    //       name="nit"
+    //       placeholder="usuario..."
+    //       onChange={(e) => setUserInput(e.target.value)}
+    //     />
+    //     <input
+    //       type="password"
+    //       name="password"
+    //       placeholder="contraseña..."
+    //       onChange={(e) => setPassword(e.target.value)}
+    //     />
+    //     {err && (
+    //       <div className="alert alert-danger text-center">
+    //         Debe completar todos los campos
+    //       </div>
+    //     )}
+    //     <button className="btn btn-primary" onClick={(e) => handleLogin(e)}>
+    //       INGRESAR
+    //     </button>
+    //     <Link className="btn btn-secondary" to="/register">
+    //       REGISTRAR
+    //     </Link>
+    //   </form>
+    // </div>
+ * 
+
+
+ css
+
+ .login-container {
+  margin: auto;
+  width: 50%;
+  margin-top: 2rem;
+}
+
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.form-container input {
+  outline: none;
+  padding: 10px;
+  border-radius: 10px;
+}
