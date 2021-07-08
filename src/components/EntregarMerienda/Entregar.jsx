@@ -340,7 +340,13 @@ const Entregar = () => {
             <div>
               <h2>
                 {`$ ${new Intl.NumberFormat("de-DE").format(
-                  filterOrder.reduce((acc, item) => acc + item.precio, 0)
+                  filterOrder.reduce(
+                    (acc, item) =>
+                      (item.estado === "pendiente" ||
+                        item.esatdo === "entregado") &&
+                      acc + item.precio,
+                    0
+                  )
                 )}`}
               </h2>
             </div>

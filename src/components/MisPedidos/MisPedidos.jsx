@@ -29,7 +29,18 @@ const MisPedidos = () => {
 
   const AnularOrderAction = async (item) => {
     const actualDate = formatISO9075(new Date(), { representation: "date" });
-    console.log(`actual date : ${actualDate} schedule : ${schedule}`);
+
+    const hour = new Date().getHours();
+    console.log(`JORNADA : ${item.jornada} #HORA : ${hour}`);
+    if (item.jornada === 1 && hour >= 9) {
+      Swal.fire("Ya no puede anular la orden ", "", "danger");
+      return;
+    }
+    if (item.jornada === 2 && hour >= 16) {
+      Swal.fire("Ya no puede anular la orden ", "", "danger");
+      return;
+    }
+
     if (actualDate === schedule) {
       try {
         await axios.put(
@@ -119,7 +130,11 @@ const MisPedidos = () => {
             <li className="order-list-item">{`$ ${new Intl.NumberFormat(
               "de-DE"
             ).format(item.precio)}`}</li>
-            {item.jornada === 1 && item.fecha === schedule && hour < 9 ? (
+            {item.jornada === 1 &&
+            item.fecha &&
+            item.estado === "pendiente" &&
+            schedule &&
+            hour < 9 ? (
               <li className="order-list-item">
                 <button
                   className="btn btn-danger"
@@ -148,7 +163,12 @@ const MisPedidos = () => {
       <div className="total-orders mb-3">
         <h4>Total: </h4>
         <h5>{`$ ${new Intl.NumberFormat("de-DE").format(
-          ordersByDate.reduce((ttl, el) => ttl + el.precio, 0)
+          ordersByDate.reduce(
+            (ttl, el) =>
+              (el.estado === "pendiente" || el.estado === "entregado") &&
+              ttl + el.precio,
+            0
+          )
         )}`}</h5>
       </div>
       {ordersByDate.length === 0 && (

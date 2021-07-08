@@ -43,13 +43,8 @@
 .bars-menu {
   display: none;
   font-size: 1.3rem;
-
+  cursor: pointer;
   padding: 10px;
-}
-.toggle {
-  display: none;
-  background: red;
-  transition: all 0.4s;
 }
 
 @media (max-width: 1024px) {
@@ -61,6 +56,11 @@
 @media (max-width: 768px) {
   .bars-menu {
     display: block;
+  }
+  .toggle {
+    display: none;
+
+    transition: all 0.4s;
   }
   .nav-options {
     width: 100%;
