@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
 
 import { formatISO9075 } from "date-fns";
 import Swal from "sweetalert2";
@@ -13,6 +13,28 @@ const PedidosProvider = (props) => {
   const [initialDate, setInitialDate] = useState(date);
   const [finalDate, setFinalDate] = useState(date);
   const [ordersByDate, setOrdersByDate] = useState([]);
+
+  let time = useRef();
+  const actualDate = formatISO9075(new Date());
+
+  // formatISO9075(new Date());
+  const [schedule, setSchedule] = useState(actualDate);
+
+  useEffect(() => {
+    let unmunted = false;
+    const updateTime = () => {
+      time.current = formatISO9075(new Date(), { representation: "date" });
+
+      if (!unmunted) {
+        setSchedule(time.current);
+      }
+    };
+
+    setInterval(updateTime, 1000);
+    return () => {
+      unmunted = true;
+    };
+  }, []);
 
   useEffect(() => {
     console.log(order);
@@ -37,15 +59,12 @@ const PedidosProvider = (props) => {
         }
       );
       const dataOrdersBy = res.data;
-      let arrayOrdersBy = [];
-      dataOrdersBy.forEach((el) => {
-        arrayOrdersBy.push({
-          ...el,
-          fecha: el.fecha.slice(0, 10),
-        });
+      let arrayOrdersBy = [...dataOrdersBy];
+      arrayOrdersBy.forEach((el) => {
+        el.fecha = el.fecha.slice(0, 10);
       });
       setOrdersByDate(arrayOrdersBy);
-      console.log(ordersByDate);
+      console.log(arrayOrdersBy);
     } catch (error) {
       console.log(error);
     }
@@ -54,6 +73,7 @@ const PedidosProvider = (props) => {
   return (
     <PedidosContext.Provider
       value={{
+        schedule,
         handleAddOrder,
         order,
         setOrder,

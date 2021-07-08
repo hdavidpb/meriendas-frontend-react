@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { formatISO9075 } from "date-fns";
 import { MenuContext } from "../../../context/MenuProvider";
 import { PedidosContext } from "../../../context/PedidosProvider";
@@ -11,32 +11,11 @@ const MenuAvailable = () => {
   const [jornada, setJornada] = useState("");
   const [disabledButtom, setDisabledButtom] = useState(true);
 
-  const { order, setOrder, handleAddOrder } = useContext(PedidosContext);
+  const { order, setOrder, handleAddOrder, schedule } =
+    useContext(PedidosContext);
   useEffect(() => {
     handleGetAllAvailableMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  let time = useRef();
-  // formatISO9075(new Date());
-  const [schedule, setSchedule] = useState(time);
-
-  /* ++++++++++++++++++++COMPONENT STATES+++++++++++++++++++++++++++++++++++++ */
-
-  useEffect(() => {
-    let unmunted = false;
-    const updateTime = () => {
-      time.current = formatISO9075(new Date());
-
-      if (!unmunted) {
-        setSchedule(time.current);
-      }
-    };
-
-    setInterval(updateTime, 1000);
-    return () => {
-      unmunted = true;
-    };
   }, []);
 
   const handleShowConfirmOrder = (

@@ -1,9 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { formatISO9075 } from "date-fns";
 import "./misPedidos.css";
+import Swal from "sweetalert2";
 import report from "../../assets/img/report.svg";
 import { PedidosContext } from "../../context/PedidosProvider";
 import { UserContext } from "../../context/UserProvider";
+import axios from "axios";
 const MisPedidos = () => {
+  const actualHour = new Date().getHours();
+
+  const [hour, setHour] = useState(actualHour);
+
   const {
     initialDate,
     setInitialDate,
@@ -11,8 +18,35 @@ const MisPedidos = () => {
     setFinalDate,
     handleGetOrdersByDate,
     ordersByDate,
+
+    schedule,
   } = useContext(PedidosContext);
   const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    setHour(new Date().getHours());
+  }, [schedule, setHour]);
+
+  const AnularOrderAction = async (item) => {
+    const actualDate = formatISO9075(new Date(), { representation: "date" });
+    console.log(`actual date : ${actualDate} schedule : ${schedule}`);
+    if (actualDate === schedule) {
+      try {
+        await axios.put(
+          `http://localhost:3001/api/updateTo-delivered-anular/${item.id}`,
+          {
+            state: "anulado",
+          }
+        );
+        Swal.fire("Orden anulada!", "", "success");
+      } catch (error) {
+        console.log(error);
+      }
+      handleGetOrdersByDate(initialDate, finalDate, user.nit);
+    } else {
+      Swal.fire("Ya no puede anular la orden ", "", "danger");
+    }
+  };
 
   const handleChageInitialDate = (e) => {
     setInitialDate(e.target.value);
@@ -23,6 +57,11 @@ const MisPedidos = () => {
     setFinalDate(e.target.value);
     console.log(finalDate);
   };
+
+  useEffect(() => {
+    handleGetOrdersByDate(initialDate, finalDate, user.nit);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="mis-pedidos-container mt-3">
@@ -56,6 +95,7 @@ const MisPedidos = () => {
         <li className="order-list-item"> JORNADA</li>
         <li className="order-list-item"> MENÚ</li>
         <li className="order-list-item"> PRECIO</li>
+        <li className="order-list-item"> </li>
       </ul>
 
       <div className="orders-container ">
@@ -79,6 +119,29 @@ const MisPedidos = () => {
             <li className="order-list-item">{`$ ${new Intl.NumberFormat(
               "de-DE"
             ).format(item.precio)}`}</li>
+            {item.jornada === 1 && item.fecha === schedule && hour < 9 ? (
+              <li className="order-list-item">
+                <button
+                  className="btn btn-danger"
+                  onClick={() => AnularOrderAction(item)}
+                >
+                  ANULAR
+                </button>
+              </li>
+            ) : null}
+            {item.jornada === 2 &&
+            item.estado !== "anulado" &&
+            item.fecha === schedule &&
+            hour < 16 ? (
+              <li className="order-list-item">
+                <button
+                  className="btn btn-danger"
+                  onClick={() => AnularOrderAction(item)}
+                >
+                  ANULAR
+                </button>
+              </li>
+            ) : null}
           </ul>
         ))}
       </div>

@@ -11,7 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   background: white;
   padding: 1rem;
 }
@@ -33,6 +33,15 @@
   border-radius: 20px;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.391);
   text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.date-container-inputDate input:focus {
+  box-shadow: 3px 3px 3px rgba(10, 159, 240, 0.392) inset,
+    3px 3px 3px rgba(10, 159, 240, 0.576);
+  outline: 0 none;
 }
 
 .orders-container {

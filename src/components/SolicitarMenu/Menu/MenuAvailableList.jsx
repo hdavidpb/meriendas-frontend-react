@@ -5,7 +5,7 @@ import { PedidosContext } from "../../../context/PedidosProvider";
 
 const MenuAvailableList = ({
   item,
-  handleCloseConfirmOrder,
+
   handleShowConfirmOrder,
   setJornada,
   setShowConfirm,
@@ -28,6 +28,7 @@ const MenuAvailableList = ({
 
   const [hours, setHours] = useState(hour);
   const [days, setDays] = useState(day);
+
   const [showJornada1, setShowJornada1] = useState(false);
   const [showJornada2, setShowJornada2] = useState(false);
 
@@ -36,6 +37,7 @@ const MenuAvailableList = ({
       let unmunted = false;
       let hour = new Date().getHours();
       let day = new Date().getDay();
+
       if (!unmunted) {
         setHours(hour);
         setDays(day);

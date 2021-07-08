@@ -65,6 +65,7 @@ const Entregar = () => {
 
       setFilterOrder(showArray);
       console.log(filterOrder);
+      console.log(showArray);
     } catch (error) {
       console.log(error);
     }
@@ -100,6 +101,9 @@ const Entregar = () => {
   };
 
   const handleAplyAction = (action, user) => {
+    if (checkedOrders.length === 0)
+      Swal.fire("No se han realizado acciones ", "", "warning");
+
     let newArrayPostAction = [...filterOrder];
     newArrayPostAction.forEach((el) => {
       if (el.check) el.estado = action;
@@ -142,24 +146,26 @@ const Entregar = () => {
   const handleCheckedAllOrders = () => {
     const allOrdersChecked = [...filterOrder];
     allOrdersChecked.forEach((el) => {
-      el.check = !checked;
+      if (el.estado === "pendiente") {
+        el.check = !checked;
+      }
     });
 
     setFilterOrder(allOrdersChecked);
     setChecked(!checked);
   };
 
-  const handleCheckedOrder = (i) => {
-    const arraySelected = [...filterOrder];
-    arraySelected.forEach((el, index) => {
-      if (index === i) {
-        el.check = !el.check;
-      }
-      setFilterOrder(arraySelected);
-    });
+  const handleCheckedOrder = (item, i) => {
+    if (item.estado === "pendiente") {
+      const arraySelected = [...filterOrder];
+      arraySelected.forEach((el, index) => {
+        if (index === i) {
+          el.check = !el.check;
+        }
+        setFilterOrder(arraySelected);
+      });
+    }
   };
-
-  ////////////////CHANGE CHACKED///////////////////7
 
   return (
     <div className="delivered-consult-orders-container">

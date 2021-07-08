@@ -34,7 +34,7 @@ const Navbar = (props) => {
       <div className="nav-brand">
         <h3>Meriendas</h3>
       </div>
-      <div className="nav-options" data-aos="zoom-in-up">
+      <div className="nav-options">
         {user.state ? (
           <ul className="nav-list">
             {roll === "admin" ? (

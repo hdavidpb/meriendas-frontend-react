@@ -6,12 +6,14 @@ const EntregarList = ({ item, index, handleCheckedOrder, filterOrder }) => {
     <ul key={item.id} className="orders-list">
       <li className="order-list-item counter">{index + 1}</li>
       <li className="order-list-item ckeckboxBox">
-        <input
-          type="checkbox"
-          id="check"
-          checked={item.check}
-          onChange={() => handleCheckedOrder(index)}
-        />
+        {item.estado === "pendiente" && (
+          <input
+            type="checkbox"
+            id="check"
+            checked={item.check}
+            onChange={() => handleCheckedOrder(item, index)}
+          />
+        )}
         <div
           className={
             item.estado === "entregado"
